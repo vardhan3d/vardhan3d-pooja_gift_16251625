@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Happy Birthday ❤️</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ================= PASSWORD SCREEN ================= -->
+
+<div id="passwordScreen" class="full-screen active-screen">
+    <div class="container">
+        <h1>Enter Our Special Date 💌</h1>
+        <input type="password" id="pass" placeholder="DDMMYYYY" autocomplete="off">
+        <br>
+        <button class="btn" onclick="checkPass()">Unlock</button>
+        <p id="error" style="color:#ff0033;margin-top:10px;"></p>
+    </div>
+</div>
+
+<!-- ================= COUNTDOWN SCREEN ================= -->
+
+<div id="countdownScreen" class="full-screen">
+    <h1 id="countNumber" class="count-text">3</h1>
+</div>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div id="mainContent" class="full-screen">
+
+<nav>
+<h2>❤️ Our Story</h2>
+<button class="lock-btn" onclick="lockAgain()">🔒 Lock</button>
+</nav>
+
+<h1 class="big-title">Happy Birthday My Love ❤️</h1>
+
+<div class="birthday-letter">
+<p>
+My love, on this beautiful day I just want to celebrate you. your smile, your strength, your kindness, and the light you bring into my life. Every year that passes is not just a reminder of your age, but a reminder of how the world became brighter the day you were born. 
+</p>
+<p>
+I wish I could wrap all my love around you today and make you feel how deeply you are cherished. May this year heal every old wound, fulfill every quiet dream in your heart, and give you moments so happy that they stay with you forever. 
+</p>
+<p>
+Thank you for existing, for being you, and for allowing me to stand beside you now. Happy Birthday, my heart. Today and always, you deserve the purest happiness.
+</p>
+</div>
+
+<div class="birthday-message">
+<p>
+Today is not just your birthday…  
+It's the day the most beautiful soul came into this world.  
+You deserve all the happiness, peace, and love ❤️
+</p>
+</div>
+
+<div class="container">
+<p class="section-title">Choose a chapter of our story</p>
+<br>
+
+<!-- Journey Cards -->
+<div class="journey-cards">
+    <div class="journey-card">
+        <div class="card-icon-img">
+            <img src="images\Icons\past-icon.jpg" alt="Past">
+        </div>
+        <h3>Past</h3>
+        <p class="card-desc">Travel to your past and read a letter from my heart</p>
+        <a href="past.html" class="btn">Visit Past</a>
+    </div>
+
+    <div class="journey-card">
+        <div class="card-icon-img">
+            <img src="images\Icons\present-icon.jpg" alt="Present">
+        </div>
+        <h3>Present</h3>
+        <p class="card-desc">Explore our beautiful present and the moments we share</p>
+        <a href="present.html" class="btn">Visit Present</a>
+    </div>
+
+    <div class="journey-card">
+        <div class="card-icon-img">
+            <img src="images\Icons\future-icon.jpg" alt="Future">
+        </div>
+        <h3>Future</h3>
+        <p class="card-desc">See the dreams we will build together forever</p>
+        <a href="future.html" class="btn">Visit Future</a>
+    </div>
+</div>
+
+<!-- Timeline Divider -->
+<div class="timeline-divider">
+    <div class="timeline-line"></div>
+    <div class="timeline-heart">❤️</div>
+    <div class="timeline-line"></div>
+</div>
+
+<!-- Special Stats Section -->
+<div class="love-stats">
+    <div class="stat-box">
+        <div class="stat-number" id="daysCount">0</div>
+        <div class="stat-label">Days Since We Met</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Memories Created</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-number" id="ageCount">0</div>
+        <div class="stat-label">Years of Beautiful You</div>
+    </div>
+</div>
+
+<!-- Love Quote -->
+<div class="love-quote">
+    <p>"In all the world, there is no heart for me like yours.<br>
+    In all the world, there is no love for you like mine."</p>
+    <span class="quote-author">Taro Ghar waro</span>
+</div>
+
+<!-- Real-Time Counter -->
+<div class="realtime-counter">
+    <h3>Time Together</h3>
+    <div class="time-boxes">
+        <div class="time-box">
+            <div class="time-value" id="hours">00</div>
+            <div class="time-label">Hours</div>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-box">
+            <div class="time-value" id="minutes">00</div>
+            <div class="time-label">Minutes</div>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-box">
+            <div class="time-value" id="seconds">00</div>
+            <div class="time-label">Seconds</div>
+        </div>
+    </div>
+    <p class="counter-subtitle">Every second with you is precious ❤️</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// Store unlock state in sessionStorage instead of localStorage
+// This means it stays unlocked during the browsing session
+// but resets when the browser is closed or tab is closed
+
+window.onload = function(){
+    // Check if already unlocked in this session
+    if(sessionStorage.getItem("unlocked")==="yes"){
+        showMainDirect();
+    }
+}
+
+function checkPass(){
+    if(document.getElementById("pass").value==="05012025"){
+        // Use sessionStorage instead of localStorage
+        sessionStorage.setItem("unlocked","yes");
+        startCountdown();
+    }else{
+        document.getElementById("error").innerText="Wrong Date 💔";
+    }
+}
+
+function startCountdown(){
+    document.getElementById("passwordScreen").classList.remove("active-screen");
+    document.getElementById("countdownScreen").classList.add("active-screen");
+
+    let count = 3;
+    let counter = document.getElementById("countNumber");
+
+    counter.innerText = count;
+
+    let interval = setInterval(function(){
+        count--;
+        counter.innerText = count;
+
+        if(count === 0){
+            clearInterval(interval);
+            showMain();
+        }
+    },1000);
+}
+
+function showMain(){
+    document.getElementById("countdownScreen").classList.remove("active-screen");
+    document.getElementById("mainContent").classList.add("active-screen");
+    document.getElementById("bgMusic").play();
+
+    document.body.classList.add("blast");
+    setTimeout(()=>{document.body.classList.remove("blast");},600);
+}
+
+function showMainDirect(){
+    document.getElementById("passwordScreen").classList.remove("active-screen");
+    document.getElementById("countdownScreen").classList.remove("active-screen");
+    document.getElementById("mainContent").classList.add("active-screen");
+
+    document.getElementById("bgMusic").play();
+}
+
+// Function to lock again (useful for testing or privacy)
+function lockAgain(){
+    sessionStorage.removeItem("unlocked");
+    location.reload();
+}
+
+// Calculate days since you met (change this date to when you first met)
+function calculateDaysSince(){
+    const startDate = new Date('2025-01-05'); // Change this to your actual meeting date
+    const today = new Date();
+    const diffTime = Math.abs(today - startDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if(document.getElementById("daysCount")){
+        animateNumber(document.getElementById("daysCount"), diffDays);
+    }
+}
+
+// Calculate age (change this to her birth date)
+function calculateAge(){
+    const birthDate = new Date('2001-05-01'); // Change this to her actual birth date
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    
+    if(document.getElementById("ageCount")){
+        animateNumber(document.getElementById("ageCount"), age);
+    }
+}
+
+// Animate number counting
+function animateNumber(element, target){
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+        current += increment;
+        if(current >= target){
+            element.textContent = Math.floor(target);
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current);
+        }
+    }, 30);
+}
+
+// Run calculations when main content shows
+setTimeout(() => {
+    calculateDaysSince();
+    calculateAge();
+    startRealtimeCounter();
+}, 1000);
+
+// Real-time counter function
+function startRealtimeCounter(){
+    const startDate = new Date('2025-01-05'); // Change this to your actual meeting date (same as above)
+    
+    function updateCounter(){
+        const now = new Date();
+        const diff = now - startDate;
+        
+        // Calculate total hours, minutes, seconds
+        const totalSeconds = Math.floor(diff / 1000);
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const totalHours = Math.floor(totalMinutes / 60);
+        
+        // Get remaining minutes and seconds for display
+        const displayHours = totalHours;
+        const displayMinutes = totalMinutes % 60;
+        const displaySeconds = totalSeconds % 60;
+        
+        // Update the display with zero-padding
+        if(document.getElementById("hours")){
+            document.getElementById("hours").textContent = String(displayHours).padStart(2, '0');
+        }
+        if(document.getElementById("minutes")){
+            document.getElementById("minutes").textContent = String(displayMinutes).padStart(2, '0');
+        }
+        if(document.getElementById("seconds")){
+            document.getElementById("seconds").textContent = String(displaySeconds).padStart(2, '0');
+        }
+    }
+    
+    // Update immediately
+    updateCounter();
+    
+    // Update every second
+    setInterval(updateCounter, 1000);
+}
+
+</script>
+
+</body>
+</html>
